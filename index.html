@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bean & Prose | Artisanal Coffee House</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#1C1613',       /* Dark Roasted Espresso */
+                            espresso: '#2C1E18',   /* Deep Espresso */
+                            roast: '#4A342B',      /* Medium Roast Brown */
+                            terracotta: '#A65D37', /* Warm Terracotta */
+                            gold: '#D4A359',       /* Soft Gold */
+                            creme: '#FDFBF7',      /* Cream */
+                            warm: '#F4ECE1',       /* Cozy Warm Beige */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4ECE1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A65D37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4A342B;
+        }
+        .glass-header {
+            background: rgba(28, 22, 19, 0.88);
+            backdrop-filter: blur(14px);
+        }
+    </style>
+</head>
+<body class="bg-brand-creme text-brand-dark font-sans antialiased flex flex-col min-h-screen relative overflow-x-hidden">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-header text-brand-warm transition-all duration-300 border-b border-brand-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- LOGO -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold group-hover:bg-brand-gold group-hover:text-brand-dark transition-all duration-300">
+                    <i data-lucide="coffee" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-2xl font-bold tracking-wide text-brand-creme leading-none">Bean & Prose</span>
+                    <span class="text-[10px] tracking-widest text-brand-gold uppercase font-medium">Artisanal Coffee</span>
+                </div>
+            </a>
+
+            <!-- DESKTOP NAVIGATION -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-brand-warm/90">
+                <a href="#home" class="hover:text-brand-gold transition-colors">Home</a>
+                <a href="#about" class="hover:text-brand-gold transition-colors">Our Story</a>
+                <a href="#menu" class="hover:text-brand-gold transition-colors">Menu</a>
+                <a href="#methods" class="hover:text-brand-gold transition-colors">Brewing Methods</a>
+                <a href="#reviews" class="hover:text-brand-gold transition-colors">Reviews</a>
+                <a href="#reservation" class="hover:text-brand-gold transition-colors">Reservations</a>
+                <a href="#contact" class="hover:text-brand-gold transition-colors">Contact</a>
+            </nav>
+
+            <!-- ACTIONS & CART -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-full bg-brand-espresso hover:bg-brand-roast text-brand-gold border border-brand-gold/30 transition-all flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-terracotta text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+
+                <a href="#menu" class="hidden sm:inline-flex items-center gap-2 bg-brand-terracotta hover:bg-brand-roast text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg">
+                    <span>Order Online</span>
+                </a>
+
+                <!-- MOBILE MENU BUTTON -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-brand-warm hover:text-brand-gold focus:outline-none">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOBILE MENU DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-dark/95 border-b border-brand-gold/20 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Home</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Our Story</a>
+            <a href="#menu" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Menu</a>
+            <a href="#methods" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Brewing Methods</a>
+            <a href="#reviews" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Reviews</a>
+            <a href="#reservation" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold border-b border-brand-roast/40">Reservations</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-brand-warm hover:text-brand-gold">Contact</a>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-brand-dark">
+        <!-- Background Overlay Image -->
+        <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
+            <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=1600&auto=format&fit=crop" alt="Artisanal Coffee Beans" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent z-0"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-brand-warm py-20">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 text-brand-gold border border-brand-gold/30 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> 100% Specialty Specialty Beans
+            </span>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-brand-creme leading-tight mb-6">
+                Where Every Cup Tells a Story.
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl text-brand-warm/80 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                Step into a world of rich aromas, ethically sourced single-origin coffee beans, and slow-crafted brewing techniques designed for moments of genuine connection.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-brand-terracotta hover:bg-brand-roast text-white font-semibold text-base transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2 group">
+                    <span>Explore Menu</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#reservation" class="w-full sm:w-auto px-8 py-4 rounded-full bg-transparent hover:bg-brand-creme/10 text-brand-warm border border-brand-gold/40 font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-brand-gold"></i>
+                    <span>Book a Table</span>
+                </a>
+            </div>
+
+            <!-- Hero Highlights -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t border-brand-gold/20 text-left">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-xl bg-brand-roast/50 border border-brand-gold/20 text-brand-gold">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-serif font-semibold text-sm text-brand-creme">100% Arabica</h4>
+                        <p class="text-xs text-brand-warm/60">SCA Score 85+</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-xl bg-brand-roast/50 border border-brand-gold/20 text-brand-gold">
+                        <i data-lucide="flame" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-serif font-semibold text-sm text-brand-creme">In-House Roast</h4>
+                        <p class="text-xs text-brand-warm/60">Fresh weekly batches</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-xl bg-brand-roast/50 border border-brand-gold/20 text-brand-gold">
+                        <i data-lucide="cup-soda" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-serif font-semibold text-sm text-brand-creme">Manual Brews</h4>
+                        <p class="text-xs text-brand-warm/60">V60, Aeropress & More</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-xl bg-brand-roast/50 border border-brand-gold/20 text-brand-gold">
+                        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-serif font-semibold text-sm text-brand-creme">Direct Trade</h4>
+                        <p class="text-xs text-brand-warm/60">Supporting micro-farmers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ABOUT US / STORY SECTION -->
+    <section id="about" class="py-24 bg-brand-creme text-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Images Collage -->
+                <div class="relative">
+                    <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop" alt="Barista pouring artisanal coffee" class="w-full h-[420px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-8 -right-6 z-20 hidden sm:block w-3/5 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=600&auto=format&fit=crop" alt="Warm coffee shop interior" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-brand-warm rounded-full -z-0"></div>
+                </div>
+
+                <!-- Story Content -->
+                <div class="space-y-6">
+                    <span class="text-brand-terracotta font-semibold text-sm tracking-widest uppercase flex items-center gap-2">
+                        <span class="w-8 h-[2px] bg-brand-terracotta"></span> Our Story
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-espresso leading-tight">
+                        A passion for origin, small-batch roasting, and warm prose.
+                    </h2>
+                    <p class="text-brand-roast/80 leading-relaxed font-normal">
+                        Founded in 2018, **Bean & Prose** was born out of a desire to create a sanctuary for coffee lovers—a place where quality ingredients meet mindful conversation.
+                    </p>
+                    <p class="text-brand-roast/80 leading-relaxed font-normal">
+                        We source micro-lots directly from small farms across Ethiopia, Colombia, and Brazil, honoring the farmers' craft and delivering distinct flavor profiles with every pour.
+                    </p>
+
+                    <div class="pt-4 grid grid-cols-2 gap-6 border-t border-brand-warm">
+                        <div>
+                            <span class="font-serif text-3xl font-bold text-brand-terracotta block">100%</span>
+                            <span class="text-xs text-brand-roast/70 uppercase font-semibold">Hand-Picked Beans</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-3xl font-bold text-brand-terracotta block">12+</span>
+                            <span class="text-xs text-brand-roast/70 uppercase font-semibold">Brewing Techniques</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. EXTRACTION & BREWING METHODS -->
+    <section id="methods" class="py-20 bg-brand-warm/60 border-y border-brand-gold/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-brand-terracotta font-semibold text-sm tracking-widest uppercase">The Craft of Extraction</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-espresso mt-2">Signature Brewing Methods</h2>
+                <p class="text-brand-roast/70 mt-3 text-sm sm:text-base">Select your brewing preference to highlight different subtle flavor notes in your cup.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Hario V60 -->
+                <div class="bg-brand-creme p-6 rounded-2xl shadow-sm border border-brand-gold/20 hover:shadow-md transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mb-6">
+                        <i data-lucide="filter" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-brand-espresso mb-2">Hario V60</h3>
+                    <p class="text-sm text-brand-roast/80 leading-relaxed mb-4">Conical pour-over with spiral ribs. Enhances bright acidity, delicate floral aromas, and a light body.</p>
+                    <span class="inline-block px-3 py-1 bg-brand-warm text-brand-roast text-xs font-semibold rounded-full">Profile: Light & Crisp</span>
+                </div>
+
+                <!-- Aeropress -->
+                <div class="bg-brand-creme p-6 rounded-2xl shadow-sm border border-brand-gold/20 hover:shadow-md transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mb-6">
+                        <i data-lucide="cylinder" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-brand-espresso mb-2">Aeropress</h3>
+                    <p class="text-sm text-brand-roast/80 leading-relaxed mb-4">Smooth immersion with gentle air pressure. Yields rich sweetness, fuller body, and low acidity.</p>
+                    <span class="inline-block px-3 py-1 bg-brand-warm text-brand-roast text-xs font-semibold rounded-full">Profile: Rich & Sweet</span>
+                </div>
+
+                <!-- French Press -->
+                <div class="bg-brand-creme p-6 rounded-2xl shadow-sm border border-brand-gold/20 hover:shadow-md transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mb-6">
+                        <i data-lucide="coffee" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-brand-espresso mb-2">French Press</h3>
+                    <p class="text-sm text-brand-roast/80 leading-relaxed mb-4">Full immersion extraction without paper filters. Retains natural oils for a velvety, robust texture.</p>
+                    <span class="inline-block px-3 py-1 bg-brand-warm text-brand-roast text-xs font-semibold rounded-full">Profile: Bold & Velvety</span>
+                </div>
+
+                <!-- Espresso -->
+                <div class="bg-brand-creme p-6 rounded-2xl shadow-sm border border-brand-gold/20 hover:shadow-md transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mb-6">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-brand-espresso mb-2">Espresso Bar</h3>
+                    <p class="text-sm text-brand-roast/80 leading-relaxed mb-4">High-pressure extraction producing concentrated flavor topped with a dense golden crema layer.</p>
+                    <span class="inline-block px-3 py-1 bg-brand-warm text-brand-roast text-xs font-semibold rounded-full">Profile: Intense & Complex</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. INTERACTIVE MENU -->
+    <section id="menu" class="py-24 bg-brand-creme">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-terracotta font-semibold text-sm tracking-widest uppercase">Artisanal Menu</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-espresso mt-2">Crafted Drinks & Treats</h2>
+                <p class="text-brand-roast/70 mt-3 text-sm sm:text-base">Select your favorite items, customize your milk preference, and add to your cart.</p>
+            </div>
+
+            <!-- CATEGORY FILTERS -->
+            <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mb-12" id="category-filters">
+                <button onclick="filterCategory('all')" class="filter-btn active px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-brand-espresso text-brand-gold shadow-sm">All Items</button>
+                <button onclick="filterCategory('hot')" class="filter-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-brand-warm text-brand-roast hover:bg-brand-roast hover:text-white">Specialty Coffee</button>
+                <button onclick="filterCategory('cold')" class="filter-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-brand-warm text-brand-roast hover:bg-brand-roast hover:text-white">Iced & Cold Brews</button>
+                <button onclick="filterCategory('pastries')" class="filter-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-brand-warm text-brand-roast hover:bg-brand-roast hover:text-white">Pastries & Bakery</button>
+                <button onclick="filterCategory('savory')" class="filter-btn px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-brand-warm text-brand-roast hover:bg-brand-roast hover:text-white">Savory Bites</button>
+            </div>
+
+            <!-- MENU ITEMS GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-grid">
+                <!-- Dynamically Injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. REVIEWS / TESTIMONIALS SECTION -->
+    <section id="reviews" class="py-20 bg-brand-warm/40 border-y border-brand-gold/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-brand-terracotta font-semibold text-sm tracking-widest uppercase">Kind Words</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-espresso mt-2">What Our Guests Say</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-brand-creme p-8 rounded-2xl shadow-sm border border-brand-gold/20 relative">
+                    <div class="flex items-center gap-1 text-brand-gold mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-brand-roast/90 italic leading-relaxed mb-6">
+                        "The V60 pour-over with Ethiopian Yirgacheffe is hands down the best coffee in the city. Incredible ambiance for reading or working."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-terracotta text-white font-serif font-bold flex items-center justify-center">EA</div>
+                        <div>
+                            <h4 class="font-semibold text-sm text-brand-espresso">Eleanor Vance</h4>
+                            <span class="text-xs text-brand-roast/60">Verified Guest</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-creme p-8 rounded-2xl shadow-sm border border-brand-gold/20 relative">
+                    <div class="flex items-center gap-1 text-brand-gold mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-brand-roast/90 italic leading-relaxed mb-6">
+                        "Fresh butter croissants and oat milk Flat White are my weekend ritual. The staff truly understands specialty coffee!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-gold text-brand-dark font-serif font-bold flex items-center justify-center">MK</div>
+                        <div>
+                            <h4 class="font-semibold text-sm text-brand-espresso">Marcus Chen</h4>
+                            <span class="text-xs text-brand-roast/60">Regular Customer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-creme p-8 rounded-2xl shadow-sm border border-brand-gold/20 relative">
+                    <div class="flex items-center gap-1 text-brand-gold mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-brand-roast/90 italic leading-relaxed mb-6">
+                        "Loved ordering through WhatsApp. The delivery was fast, packaged with care, and the Cold Brew Tonic was incredibly refreshing."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-espresso text-brand-gold font-serif font-bold flex items-center justify-center">SL</div>
+                        <div>
+                            <h4 class="font-semibold text-sm text-brand-espresso">Sophia Laurent</h4>
+                            <span class="text-xs text-brand-roast/60">Food Blogger</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TABLE RESERVATION & CONTACT -->
+    <section id="reservation" class="py-24 bg-brand-creme">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                
+                <!-- Contact & Visit Us Information -->
+                <div id="contact" class="space-y-8">
+                    <div>
+                        <span class="text-brand-terracotta font-semibold text-sm tracking-widest uppercase">Visit Our Space</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-espresso mt-2">Location & Hours</h2>
+                        <p class="text-brand-roast/80 mt-3">Our doors are open every day for your daily coffee ritual.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-brand-warm text-brand-terracotta rounded-xl">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-brand-espresso">Address</h4>
+                                <p class="text-sm text-brand-roast/80">450 Bloom Street, Garden District, New York / NY</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-brand-warm text-brand-terracotta rounded-xl">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-brand-espresso">Opening Hours</h4>
+                                <p class="text-sm text-brand-roast/80">Monday to Friday: 07:30 AM – 08:00 PM</p>
+                                <p class="text-sm text-brand-roast/80">Saturday & Sunday: 08:30 AM – 09:00 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-brand-warm text-brand-terracotta rounded-xl">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-brand-espresso">Contact & WhatsApp</h4>
+                                <p class="text-sm text-brand-roast/80">+1 (555) 234-5678 / +1 (555) 987-6543</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Preview Card -->
+                    <div class="w-full h-48 bg-brand-warm rounded-2xl border border-brand-gold/30 flex flex-col items-center justify-center text-center p-6 relative overflow-hidden">
+                        <i data-lucide="map" class="w-10 h-10 text-brand-terracotta mb-2"></i>
+                        <span class="font-serif font-bold text-brand-espresso">Pet-Friendly & Cozy Outdoor Patio</span>
+                        <span class="text-xs text-brand-roast/70 mt-1">Free Wi-Fi and dedicated working spaces available.</span>
+                    </div>
+                </div>
+
+                <!-- Table Reservation Form -->
+                <div class="bg-brand-warm/50 p-8 sm:p-10 rounded-3xl border border-brand-gold/20 shadow-sm">
+                    <h3 class="font-serif text-2xl font-bold text-brand-espresso mb-2">Reserve a Table</h3>
+                    <p class="text-sm text-brand-roast/80 mb-6">Book your spot for meetings, coffee tastings, or weekend brunch.</p>
+
+                    <form onsubmit="handleReservation(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Full Name</label>
+                            <input type="text" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Phone / WhatsApp</label>
+                                <input type="tel" required placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Guests</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm">
+                                    <option>1 Person</option>
+                                    <option selected>2 Guests</option>
+                                    <option>3 - 4 Guests</option>
+                                    <option>5+ Guests (Party)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Date</label>
+                                <input type="date" required class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Time</label>
+                                <input type="time" required class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-brand-roast uppercase mb-1">Special Requests</label>
+                            <textarea rows="3" placeholder="Dietary restrictions, patio seating, quiet spot for working..." class="w-full px-4 py-3 rounded-xl bg-brand-creme border border-brand-gold/30 focus:border-brand-terracotta focus:outline-none text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-brand-espresso hover:bg-brand-roast text-brand-gold font-semibold rounded-xl transition-all shadow-md">
+                            Confirm Table Reservation
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-brand-warm border-t border-brand-gold/10 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold">
+                            <i data-lucide="coffee" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-serif text-xl font-bold text-brand-creme">Bean & Prose</span>
+                    </div>
+                    <p class="text-xs text-brand-warm/60 leading-relaxed">
+                        Crafting single-origin brews and artisanal pastries for everyday moments of bliss.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-serif font-bold text-brand-gold mb-4 text-sm uppercase tracking-wider">Navigation</h4>
+                    <ul class="space-y-2 text-xs text-brand-warm/70">
+                        <li><a href="#about" class="hover:text-brand-gold">Our Story</a></li>
+                        <li><a href="#menu" class="hover:text-brand-gold">Specialty Menu</a></li>
+                        <li><a href="#methods" class="hover:text-brand-gold">Extraction Methods</a></li>
+                        <li><a href="#reservation" class="hover:text-brand-gold">Book Table</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-serif font-bold text-brand-gold mb-4 text-sm uppercase tracking-wider">Newsletter</h4>
+                    <p class="text-xs text-brand-warm/60 mb-3">Join our coffee club for roasting updates & offers.</p>
+                    <form onsubmit="handleNewsletter(event)" class="flex gap-2">
+                        <input type="email" required placeholder="your@email.com" class="px-3 py-2 rounded-lg bg-brand-espresso text-xs border border-brand-gold/30 text-brand-creme focus:outline-none w-full">
+                        <button type="submit" class="px-4 py-2 bg-brand-terracotta hover:bg-brand-roast text-white rounded-lg text-xs font-semibold">Join</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h4 class="font-serif font-bold text-brand-gold mb-4 text-sm uppercase tracking-wider">Follow Us</h4>
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="w-9 h-9 rounded-full bg-brand-espresso flex items-center justify-center text-brand-gold hover:bg-brand-terracotta hover:text-white transition-all"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-brand-espresso flex items-center justify-center text-brand-gold hover:bg-brand-terracotta hover:text-white transition-all"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                        <a href="https://wa.me/15552345678" target="_blank" class="w-9 h-9 rounded-full bg-brand-espresso flex items-center justify-center text-brand-gold hover:bg-brand-terracotta hover:text-white transition-all"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-brand-roast/40 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-warm/40 gap-4">
+                <p>&copy; 2026 Bean & Prose Coffee House. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART DRAWER / SLIDE-OVER -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-brand-creme z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Cart Header -->
+        <div class="p-6 bg-brand-espresso text-brand-creme flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-gold"></i>
+                <h3 class="font-serif font-bold text-lg">Your Cart</h3>
+            </div>
+            <button onclick="toggleCart()" class="p-1 text-brand-warm/70 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Order Options & Total -->
+        <div class="p-6 border-t border-brand-warm bg-brand-warm/30 space-y-4">
+            <div>
+                <label class="block text-xs font-semibold uppercase text-brand-roast mb-2">Order Type</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setOrderType('dine-in')" id="btn-type-dine-in" class="py-2 px-2 text-xs font-semibold rounded-lg border border-brand-terracotta bg-brand-terracotta text-white transition-all">Dine-in</button>
+                    <button onclick="setOrderType('takeaway')" id="btn-type-takeaway" class="py-2 px-2 text-xs font-semibold rounded-lg border border-brand-gold/30 bg-brand-creme text-brand-roast hover:bg-brand-warm transition-all">Takeaway</button>
+                    <button onclick="setOrderType('delivery')" id="btn-type-delivery" class="py-2 px-2 text-xs font-semibold rounded-lg border border-brand-gold/30 bg-brand-creme text-brand-roast hover:bg-brand-warm transition-all">Delivery</button>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <span class="text-sm font-medium text-brand-roast">Total:</span>
+                <span id="cart-total" class="font-serif text-2xl font-bold text-brand-terracotta">$ 0.00</span>
+            </div>
+
+            <button onclick="checkoutWhatsApp()" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span>Order via WhatsApp</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-brand-espresso text-brand-gold px-5 py-3 rounded-xl shadow-2xl border border-brand-gold/30 transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400"></i>
+        <span id="toast-message" class="text-sm font-medium text-brand-creme">Item added to cart!</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // MENU DATA IN ENGLISH
+        const menuItems = [
+            {
+                id: 1,
+                name: "Classic Espresso",
+                category: "hot",
+                price: 3.50,
+                description: "Rich double shot with thick golden crema and notes of dark chocolate and hazelnut.",
+                image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            },
+            {
+                id: 2,
+                name: "Italian Cappuccino",
+                category: "hot",
+                price: 4.80,
+                description: "Equal parts espresso, steamed milk, and silky milk foam dusted with cocoa powder.",
+                image: "https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: true
+            },
+            {
+                id: 3,
+                name: "Velvety Flat White",
+                category: "hot",
+                price: 5.20,
+                description: "Double ristretto shot blended with micro-foamed milk for a smooth, espresso-forward taste.",
+                image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: true
+            },
+            {
+                id: 4,
+                name: "Cold Brew Tonic",
+                category: "cold",
+                price: 5.80,
+                description: "18-hour cold steeped coffee, artisanal tonic water, served over ice with a citrus slice.",
+                image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            },
+            {
+                id: 5,
+                name: "Iced Salted Caramel Latte",
+                category: "cold",
+                price: 6.20,
+                description: "Espresso over chilled milk, Madagascar vanilla, topped with salted caramel drizzle.",
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: true
+            },
+            {
+                id: 6,
+                name: "French Butter Croissant",
+                category: "savory",
+                price: 4.50,
+                description: "Freshly baked sourdough croissant with flaky, golden layers of French butter.",
+                image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            },
+            {
+                id: 7,
+                name: "Avocado & Poached Egg Toast",
+                category: "savory",
+                price: 9.50,
+                description: "Artisanal sourdough, smashed seasoned avocado, organic poached egg & microgreens.",
+                image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            },
+            {
+                id: 8,
+                name: "Dark Chocolate Fudge Tart",
+                category: "pastries",
+                price: 6.00,
+                description: "Crispy tart shell filled with 70% dark chocolate ganache and sea salt flakes.",
+                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            },
+            {
+                id: 9,
+                name: "Artisanal Cinnamon Roll",
+                category: "pastries",
+                price: 5.50,
+                description: "Soft brioche roll layered with Ceylon cinnamon, brown sugar, and cream cheese frosting.",
+                image: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?q=80&w=400&auto=format&fit=crop",
+                hasMilkOption: false
+            }
+        ];
+
+        // APPLICATION STATE
+        let cart = [];
+        let orderType = 'dine-in'; // 'dine-in', 'takeaway', 'delivery'
+
+        // RENDER MENU
+        function renderMenu(items) {
+            const container = document.getElementById('menu-grid');
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-brand-creme rounded-2xl overflow-hidden border border-brand-gold/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group';
+                
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-brand-dark/85 backdrop-blur-md text-brand-gold text-xs font-bold px-3 py-1 rounded-full">
+                            $ ${item.price.toFixed(2)}
+                        </span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-brand-espresso mb-2">${item.name}</h3>
+                            <p class="text-xs text-brand-roast/80 leading-relaxed mb-4">${item.description}</p>
+                        </div>
+                        
+                        ${item.hasMilkOption ? `
+                            <div class="mb-4">
+                                <label class="block text-[10px] font-bold uppercase text-brand-roast mb-1">Milk Choice:</label>
+                                <select id="milk-${item.id}" class="w-full text-xs p-2 rounded-lg bg-brand-warm border border-brand-gold/30 text-brand-dark focus:outline-none">
+                                    <option value="Whole Milk">Whole Milk</option>
+                                    <option value="Skim Milk">Skim Milk</option>
+                                    <option value="Oat Milk">Oat Milk (+$0.75)</option>
+                                    <option value="Almond Milk">Almond Milk (+$0.85)</option>
+                                    <option value="Soy Milk">Soy Milk (+$0.65)</option>
+                                </select>
+                            </div>
+                        ` : ''}
+
+                        <button onclick="addToCart(${item.id})" class="w-full py-2.5 rounded-xl bg-brand-warm hover:bg-brand-terracotta text-brand-roast hover:text-white font-semibold text-xs transition-all duration-300 flex items-center justify-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Add to Order</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // FILTER CATEGORIES
+        function filterCategory(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-espresso', 'text-brand-gold', 'shadow-sm');
+                btn.classList.add('bg-brand-warm', 'text-brand-roast');
+            });
+            event.currentTarget.classList.remove('bg-brand-warm', 'text-brand-roast');
+            event.currentTarget.classList.add('bg-brand-espresso', 'text-brand-gold', 'shadow-sm');
+
+            if (category === 'all') {
+                renderMenu(menuItems);
+            } else {
+                const filtered = menuItems.filter(item => item.category === category);
+                renderMenu(filtered);
+            }
+        }
+
+        // ADD TO CART
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            let selectedMilk = null;
+            let extraPrice = 0;
+
+            if (item.hasMilkOption) {
+                const milkSelect = document.getElementById(`milk-${itemId}`);
+                selectedMilk = milkSelect.value;
+                if (selectedMilk === 'Oat Milk') extraPrice = 0.75;
+                if (selectedMilk === 'Almond Milk') extraPrice = 0.85;
+                if (selectedMilk === 'Soy Milk') extraPrice = 0.65;
+            }
+
+            const cartItemIndex = cart.findIndex(i => i.id === itemId && i.milk === selectedMilk);
+
+            if (cartItemIndex > -1) {
+                cart[cartItemIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price + extraPrice,
+                    milk: selectedMilk,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`${item.name} added to cart!`);
+        }
+
+        // UPDATE CART UI
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const totalElement = document.getElementById('cart-total');
+
+            container.innerHTML = '';
+
+            let total = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-brand-roast/60">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-3 opacity-40"></i>
+                        <p class="text-sm">Your cart is currently empty.</p>
+                    </div>
+                `;
+            } else {
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    totalItems += item.quantity;
+
+                    const cartItemEl = document.createElement('div');
+                    cartItemEl.className = 'flex items-center justify-between p-3 bg-brand-warm/50 rounded-xl border border-brand-gold/20';
+                    cartItemEl.innerHTML = `
+                        <div>
+                            <h4 class="font-serif font-bold text-sm text-brand-espresso">${item.name}</h4>
+                            ${item.milk ? `<p class="text-[10px] text-brand-roast/70">Milk: ${item.milk}</p>` : ''}
+                            <span class="text-xs font-semibold text-brand-terracotta">$ ${item.price.toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQuantity(${index}, -1)" class="w-6 h-6 rounded-full bg-brand-creme text-brand-roast font-bold flex items-center justify-center text-xs border">-</button>
+                            <span class="text-xs font-bold text-brand-espresso">${item.quantity}</span>
+                            <button onclick="changeQuantity(${index}, 1)" class="w-6 h-6 rounded-full bg-brand-creme text-brand-roast font-bold flex items-center justify-center text-xs border">+</button>
+                        </div>
+                    `;
+                    container.appendChild(cartItemEl);
+                });
+            }
+
+            totalElement.innerText = `$ ${total.toFixed(2)}`;
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        // CHANGE QUANTITY
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        // TOGGLE CART DRAWER
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // SET ORDER TYPE
+        function setOrderType(type) {
+            orderType = type;
+            const btnDineIn = document.getElementById('btn-type-dine-in');
+            const btnTakeaway = document.getElementById('btn-type-takeaway');
+            const btnDelivery = document.getElementById('btn-type-delivery');
+
+            [btnDineIn, btnTakeaway, btnDelivery].forEach(btn => {
+                btn.className = "py-2 px-2 text-xs font-semibold rounded-lg border border-brand-gold/30 bg-brand-creme text-brand-roast hover:bg-brand-warm transition-all";
+            });
+
+            if (type === 'dine-in') {
+                btnDineIn.className = "py-2 px-2 text-xs font-semibold rounded-lg border border-brand-terracotta bg-brand-terracotta text-white transition-all";
+            } else if (type === 'takeaway') {
+                btnTakeaway.className = "py-2 px-2 text-xs font-semibold rounded-lg border border-brand-terracotta bg-brand-terracotta text-white transition-all";
+            } else {
+                btnDelivery.className = "py-2 px-2 text-xs font-semibold rounded-lg border border-brand-terracotta bg-brand-terracotta text-white transition-all";
+            }
+        }
+
+        // CHECKOUT VIA WHATSAPP
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showToast("Your cart is empty!");
+                return;
+            }
+
+            let typeLabel = "Dine-in";
+            if (orderType === 'takeaway') typeLabel = "Takeaway";
+            if (orderType === 'delivery') typeLabel = "Delivery";
+
+            let text = `☕ *New Order - Bean & Prose*\n\n`;
+            text += `*Order Type:* ${typeLabel}\n\n`;
+            text += `*Items:*\n`;
+
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                text += `• ${item.quantity}x ${item.name} ${item.milk ? `(${item.milk})` : ''} - $${subtotal.toFixed(2)}\n`;
+            });
+
+            text += `\n*Total:* $${total.toFixed(2)}\n\n`;
+            text += `I would like to confirm my order!`;
+
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/15552345678?text=${encodedText}`, '_blank');
+        }
+
+        // RESERVATION FORM
+        function handleReservation(e) {
+            e.preventDefault();
+            showToast("Table reserved successfully! Confirmation sent to your phone.");
+            e.target.reset();
+        }
+
+        // NEWSLETTER FORM
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast("Thank you for joining our newsletter!");
+            e.target.reset();
+        }
+
+        // TOAST DISPLAY
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.innerText = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // MOBILE MENU TOGGLE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // INITIALIZATION
+        window.onload = function() {
+            lucide.createIcons();
+            renderMenu(menuItems);
+        };
+    </script>
+</body>
+</html>
